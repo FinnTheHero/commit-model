@@ -1,0 +1,26 @@
+# Virtual environment
+venv/
+.venv/
+
+# Data and model artifacts (large, reproducible from scripts)
+data/
+models/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# Environment secrets (not needed for this project, but good hygiene)
+.env
+.env.*
