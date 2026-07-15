@@ -17,7 +17,6 @@ from .prompts import (
     truncate_diff,
 )
 from .inference import (
-    ADAPTER_FILE,
     DEFAULT_ADAPTER_PATH,
     DEFAULT_MODEL,
     check_adapter_path,
@@ -25,7 +24,6 @@ from .inference import (
 )
 
 __all__ = [
-    "ADAPTER_FILE",
     "CommitMsg",
     "CommitType",
     "DEFAULT_ADAPTER_PATH",

@@ -1,6 +1,8 @@
 # lora_config_kaggle.yaml
 #
-# Training config for Kaggle GPU notebooks (T4 16 GB / P100 16 GB).
+# Training config for Kaggle GPU notebooks (T4 16 GB). Use T4, not P100 --
+# Kaggle's currently pre-installed PyTorch build dropped support for P100's
+# Pascal architecture (sm_60); it requires sm_70+.
 # Uses PyTorch + HuggingFace Trainer + PEFT QLoRA — no TRL dependency.
 #
 # Reference:
@@ -29,7 +31,7 @@ use_dora: true
 num_layers: 24
 
 # Training
-# T4 and P100 have 16 GB VRAM — use batch_size=2 + accumulation=4 to keep
+# T4 has 16 GB VRAM — use batch_size=2 + accumulation=4 to keep
 # the effective batch (8) the same as the RTX 3090 run.
 learning_rate: 1.0e-4
 batch_size: 2
@@ -39,6 +41,7 @@ max_seq_length: 2048             # reduced from 3072; fits safely in 16 GB with 
 eval_steps: 50
 val_batches: 25
 save_steps: 50
+save_total_limit: 3   # keep only the last 3 checkpoints — disk fills fast otherwise
 seed: 42
 
 # Only compute loss on the assistant's completion tokens

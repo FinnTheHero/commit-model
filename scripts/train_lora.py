@@ -34,9 +34,15 @@ def load_config(path: str) -> dict:
 def preflight_checks(config: dict, resume_from: str | None) -> None:
     data_dir = Path(config["data"])
     train_file = data_dir / "train.jsonl"
+    valid_file = data_dir / "valid.jsonl"
 
     if not train_file.exists():
         print(f"[!] {train_file} not found.")
+        print("    Run scripts/prepare_data.py first.")
+        sys.exit(1)
+
+    if not valid_file.exists():
+        print(f"[!] {valid_file} not found.")
         print("    Run scripts/prepare_data.py first.")
         sys.exit(1)
 
@@ -238,11 +244,13 @@ def run_training(config: dict, resume_from: str | None) -> None:
         output_dir=config["adapter_path"],
         max_steps=config["max_steps"],
         per_device_train_batch_size=config["batch_size"],
+        per_device_eval_batch_size=config["batch_size"],
         learning_rate=config["learning_rate"],
         eval_strategy="steps",
         eval_steps=config["eval_steps"],
         save_strategy="steps",
         save_steps=config["save_steps"],
+        save_total_limit=config.get("save_total_limit", 3),
         logging_steps=config.get("logging_steps", 10),
         bf16=True,
         gradient_accumulation_steps=config.get("gradient_accumulation_steps", 1),
