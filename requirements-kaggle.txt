@@ -1,0 +1,24 @@
+# requirements-kaggle.txt
+#
+# Install in a Kaggle notebook before running training:
+#   !pip install -r requirements-kaggle.txt -q
+#   !pip install -e . -q
+#
+# Kaggle notebooks come with torch pre-installed; the versions below
+# override to known-good pins. Remove torch if the pre-installed version
+# is >=2.3.0 to save install time.
+
+torch>=2.3.0
+transformers>=4.47.0
+peft>=0.12.0
+bitsandbytes>=0.43.0
+accelerate>=0.33.0
+datasets>=2.20.0
+huggingface_hub>=0.25.0
+hf_transfer>=0.1.6
+safetensors>=0.4.0
+pydantic>=2.7.0
+pandas>=2.2.0
+pyarrow>=16.0.0
+tqdm>=4.66.0
+pyyaml>=6.0

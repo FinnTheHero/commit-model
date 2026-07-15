@@ -1,0 +1,15 @@
+{
+  "id": "YOUR_KAGGLE_USERNAME/commit-model-training",
+  "title": "commit-model-training",
+  "code_file": "notebooks/train_lora.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": [
+    "YOUR_KAGGLE_USERNAME/commit-model-data"
+  ],
+  "competition_sources": [],
+  "kernel_sources": []
+}

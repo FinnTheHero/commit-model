@@ -1,0 +1,59 @@
+# lora_config_kaggle.yaml
+#
+# Training config for Kaggle GPU notebooks (T4 16 GB / P100 16 GB).
+# Uses PyTorch + HuggingFace Trainer + PEFT QLoRA — no TRL dependency.
+#
+# Reference:
+#   https://huggingface.co/docs/peft/package_reference/lora
+#   https://huggingface.co/docs/transformers/main_classes/trainer
+
+# Base model from HuggingFace Hub (quantized at load time by bitsandbytes)
+model: "Qwen/Qwen2.5-Coder-3B-Instruct"
+
+# Directory containing train.jsonl / valid.jsonl / test.jsonl
+# On Kaggle notebooks set this to: /kaggle/input/<your-dataset-name>/
+data: "data/processed"
+
+# Where PEFT checkpoints and the final adapter are saved
+# On Kaggle notebooks set this to: /kaggle/working/adapters/
+adapter_path: "models/adapters"
+
+# LoRA / DoRA
+lora_rank: 8
+lora_alpha: 160        # effective scale = alpha / rank = 20.0
+lora_dropout: 0.0
+use_dora: true
+
+# How many of the model's final transformer layers get LoRA adapters.
+# Qwen2.5-Coder-3B has 36 total layers; 24 means layers 12-35.
+num_layers: 24
+
+# Training
+# T4 and P100 have 16 GB VRAM — use batch_size=2 + accumulation=4 to keep
+# the effective batch (8) the same as the RTX 3090 run.
+learning_rate: 1.0e-4
+batch_size: 2
+gradient_accumulation_steps: 4  # effective batch = 2 * 4 = 8
+max_steps: 3000
+max_seq_length: 2048             # reduced from 3072; fits safely in 16 GB with DoRA
+eval_steps: 50
+val_batches: 25
+save_steps: 50
+seed: 42
+
+# Only compute loss on the assistant's completion tokens
+mask_prompt: true
+
+# 4-bit QLoRA via bitsandbytes
+load_in_4bit: true
+bnb_4bit_quant_type: "nf4"
+bnb_4bit_compute_dtype: "bfloat16"
+bnb_4bit_use_double_quant: true
+
+# Optimizer
+optimizer: "paged_adamw_8bit"
+warmup_ratio: 0.03
+
+# Logging
+logging_steps: 10
+report_to: "none"
